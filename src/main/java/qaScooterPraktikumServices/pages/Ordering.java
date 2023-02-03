@@ -110,7 +110,7 @@ public class Ordering extends BasePage {
      * @param color - выбирается цвет самоката, через чекбокс
      * @return
      */
-    public Ordering makeToOrderCkickScooterAndCheckHeaderOrderDone( String date, String comment, String color) {
+    public Ordering makeToOrderCkickScooter( String date, String comment, String color) {
 
         clickOnElement(btnNext);
         findAndWaitElementAndSendKeys(inputDate, date);
