@@ -2,11 +2,9 @@ package qaScooterPraktikumServices.pages;
 
 import org.hamcrest.MatcherAssert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import qaScooterPraktikumServices.base.BasePage;
-
 import static org.hamcrest.CoreMatchers.containsString;
 
 public class Ordering extends BasePage {
@@ -27,7 +25,6 @@ public class Ordering extends BasePage {
     private final By inputComment = By.xpath("//input[@placeholder='Комментарий для курьера']"); // инпут комментарий
     private final By btnToOrderInOrderCard = By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM']"); // кнопка заказать в карточке заказа
     private final By btnYesInCardToOrder = By.xpath("//button[@class='Button_Button__ra12g Button_Middle__1CSJM' and contains(text(), 'Да')]"); // кнопка подтверждения заказа
-
     private final By orderDoneHeader = By.className("Order_ModalHeader__3FDaJ"); // заголовок в карточке заказ выполнен
     private final String expectedTextStatusOrder = "Заказ оформлен"; // проверочные данные
     private WebDriver driver;
@@ -36,57 +33,67 @@ public class Ordering extends BasePage {
         super(driver);
     }
 
+    public Ordering orderBittonSelection(String btnClick) {
 
-    // Метод делает заказ самоката и проверяет, что заказ оформлен (параметры передаются из тестового класса)
+        // если параметр btnClick top, то осуществляется клик на верхнюю кнопку заказать, иначе скрол до нижней кнопки и клик по ней
+        if(btnClick.equals("top")) {
+
+            clickOnElement(buttonTopToOrder);
+
+        } else {
+
+            scrollInOrder(buttonDownToOrder);
+
+        }
+
+        return this;
+    }
 
     /**
-     *
-     * @param btnClick - определяет какую кнопку нажимать
      * @param name - ввод в поле имя
      * @param surName - ввод в поле фамилия
      * @param adress - ввод в поле адресс
      * @param phone - ввод в поле телефон
-     * @param date - ввод даты в поле
-     * @param comment - ввод комментария в поле
-     * @param color - выбирается цвет самоката, через чекбокс
-     * @return
      */
-    public Ordering makeToOrderCkickScooterAndCheckHeaderOrderDone(String btnClick, String name, String surName, String adress, String phone, String date, String comment, String color) {
-
-        // если параметр btnClick top, то осуществляется клик на верхнюю кнопку заказать, иначе скрол до нижней кнопки и клик по ней
-        if(btnClick.equals("top")) {
-            clickOnElement(buttonTopToOrder);
-        } else {
-            scrollInOrder(buttonDownToOrder);
-        }
+    // Вводит данные в поле
+    public Ordering enterDataInTheField(String name, String surName, String adress, String phone) {
 
         findAndWaitElementAndSendKeys(inputName, name);
         findAndWaitElementAndSendKeys(inputSurName, surName);
-        findAndWaitElementAndSendKeys(inputAdress, adress); // адрес для кореспонденции деду морозу в Саратове
-
-       // explicitWaitEl(inputMetro);
+        findAndWaitElementAndSendKeys(inputAdress, adress);
         findElementInPage(inputMetro).sendKeys(Keys.ARROW_DOWN , Keys.ENTER);
-        //driver.findElement(inputMetro).sendKeys(Keys.ARROW_DOWN , Keys.ENTER);
-
         findAndWaitElementAndSendKeys(inputPhone, phone); // телефон деда мороза
-        clickOnElement(btnNext);
 
-        findAndWaitElementAndSendKeys(inputDate, date); // Поиск поля
-        clickOnElement(btnArrowRentalTime);
-        clickOnElement(secondElementDropDownRentalTime);
+        return this;
 
+    }
+
+    /**
+     * Выбор цвета кнопки
+     * @param color - цвет кнопки
+     * @return
+     */
+    public Ordering selectColorBtn(String color) {
 
         // если параметр серый то выбирается серый чекбокс, если другой то чёрный
         if(color.equals("grey")) {
+
             clickOnElement(checkboxColorScooterGrey);
+
         } else {
+
             clickOnElement(checkboxColorScooterBlack);
+
         }
 
-        findAndWaitElementAndSendKeys(inputComment, comment);
+        return this;
+    }
 
-        clickOnElement(btnToOrderInOrderCard);
-        clickOnElement(btnYesInCardToOrder);
+    /**
+     * Получить текст в карточке заказа
+     * @return
+     */
+    public Ordering getTextInCardOrderAndCheckActualText() {
 
         explicitWaitEl(orderDoneHeader);
         String actualText = getText(orderDoneHeader);
@@ -94,8 +101,28 @@ public class Ordering extends BasePage {
         MatcherAssert.assertThat(actualText, containsString(expectedTextStatusOrder));
 
         return this;
-
     }
 
+    /**
+     * Метод делает заказ самоката и проверяет, что заказ оформлен (параметры передаются из тестового класса)
+     * @param date - ввод даты в поле
+     * @param comment - ввод комментария в поле
+     * @param color - выбирается цвет самоката, через чекбокс
+     * @return
+     */
+    public Ordering makeToOrderCkickScooterAndCheckHeaderOrderDone( String date, String comment, String color) {
+
+        clickOnElement(btnNext);
+        findAndWaitElementAndSendKeys(inputDate, date);
+        clickOnElement(btnArrowRentalTime);
+        clickOnElement(secondElementDropDownRentalTime);
+        selectColorBtn(color);
+        findAndWaitElementAndSendKeys(inputComment, comment);
+        clickOnElement(btnToOrderInOrderCard);
+        clickOnElement(btnYesInCardToOrder);
+
+        return this;
+
+    }
 
 }

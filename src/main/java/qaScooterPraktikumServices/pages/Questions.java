@@ -6,9 +6,7 @@ import qaScooterPraktikumServices.base.BasePage;
 import static org.junit.Assert.*;
 
 public class Questions extends BasePage {
-
     private final By questionsImportantBlock = By.className("Home_FourPart__1uthg"); // Родительский блок "Вопросы о важном"
-
     private WebDriver driver;
 
     public Questions(WebDriver driver) {

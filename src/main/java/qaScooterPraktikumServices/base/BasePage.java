@@ -17,13 +17,13 @@ public class BasePage {
         this.driver = driver;
     }
 
-
-
-
     // Общие методы для наследников класса базовой страницы .............................................
 
-
-    // Метод открывает страницу
+    /**
+     * Метод открывает страницу
+     * @param url - открываемая страница
+     * @return
+     */
     public BasePage open(String url) {
 
         driver.get(url);
@@ -32,7 +32,11 @@ public class BasePage {
 
     }
 
-    // Метод ожидает пока элемент станет кликабельным
+    /**
+     * Метод ожидает пока элемент станет кликабельным
+     * @param el - элемент
+     * @return
+     */
     public BasePage explicitWaitEl(By el) {
 
         new WebDriverWait(driver, Duration.ofSeconds(3)).until(ExpectedConditions.elementToBeClickable(el));
@@ -41,7 +45,10 @@ public class BasePage {
 
     }
 
-    // неявное ожидание в 3 секунды
+    /**
+     * Неявное ожидание в 3 секунды
+     * @return
+     */
     public BasePage implicitWait() {
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -49,7 +56,11 @@ public class BasePage {
 
     }
 
-    // Метод скролит до любого элемента на странице
+    /**
+     * Метод скролит до любого элемента на странице
+     * @param el
+     * @return
+     */
     public BasePage scrollToElement(By el) {
 
         explicitWaitEl(el);
@@ -59,16 +70,24 @@ public class BasePage {
 
     }
 
-    // Метод ждёт пока элемнт станет кликабельным, ищет его и вводет текст из параметра
+    /**
+     * Метод ищет элемент и вводет текст из параметра
+     * @param el - элемент куда нужно ввести текст
+     * @param str - вводимы текст
+     * @return
+     */
     public BasePage findAndWaitElementAndSendKeys(By el, String str) {
 
-        //explicitWaitEl(el);
         driver.findElement(el).sendKeys(str);
         return this;
 
     }
 
-    // Метод кликает по любому элементу
+    /**
+     * Метод кликает по любому элементу
+     * @param el
+     * @return
+     */
     public BasePage clickOnElement(By el) {
 
         explicitWaitEl(el);
@@ -77,6 +96,11 @@ public class BasePage {
 
     }
 
+    /**
+     * Возвращает текст
+     * @param el
+     * @return
+     */
     public String getText(By el) {
 
         WebElement getTextEl = driver.findElement(el);
@@ -84,6 +108,11 @@ public class BasePage {
 
     }
 
+    /**
+     * Поиск элеимента на странице
+     * @param el
+     * @return
+     */
     public WebElement findElementInPage(By el) {
 
         explicitWaitEl(el);
@@ -91,6 +120,10 @@ public class BasePage {
 
     }
 
+    /**
+     * Скролл до кнопки нижней заказать на главной странице
+     * @param el
+     */
     public void scrollInOrder(By el) {
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -99,18 +132,30 @@ public class BasePage {
 
     }
 
+    /**
+     * Получить текущий урл
+     * @return
+     */
     public String geturl() {
 
         return driver.getCurrentUrl();
 
     }
 
+    /**
+     * Получить текущее окно браузера
+     * @return
+     */
     public String getWindow(){
 
         return driver.getWindowHandle();
 
     }
 
+    /**
+     * Получить текущий драйвер
+     * @return
+     */
     public WebDriver getDriver(){
 
          return driver;

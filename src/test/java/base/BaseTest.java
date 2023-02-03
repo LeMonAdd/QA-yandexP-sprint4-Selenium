@@ -17,8 +17,6 @@ public class BaseTest {
     protected Questions questions = new Questions(firefox);
     protected MainPageHeaderLogoScooterAndHeaderLogoYandex mainPageHeaderLogoScooterAndHeaderLogoYandex = new MainPageHeaderLogoScooterAndHeaderLogoYandex(firefox);
 
-
-
     @After
     public void teardown() {
         //chrome.quit(); расскоментить если хочешь использовать хром
